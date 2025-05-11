@@ -1,5 +1,4 @@
 `default_nettype none
-`timescale 1ns / 1ps
 
 module top_twilight_cat (
     input wire clk_100m,
@@ -49,11 +48,13 @@ module top_twilight_cat (
     );
 
     // === SOUND ===
-    Ode_to_Joy_player music_inst (
-        .clk(clk_100m),
-        .AUD_PWM(AUD_PWM),
-        .AUD_SD(AUD_SD)
+    music_entertainer music_inst (
+        .clk(clk_pix),
+        .rst_n(btn_rst_n),
+        .pwm(AUD_PWM)
     );
+
+    assign AUD_SD = 1'b1;
 
     // === PARAMETERS ===
     localparam H_RES = 640;
@@ -72,17 +73,22 @@ module top_twilight_cat (
 
     // === SPRITE POSITION ===
     reg signed [CORDW-1:0] sprx, spry;
+    reg move_toggle;
 
     always @(posedge clk_pix) begin
-        if (frame) begin
-            if (sprx <= -SPR_DRAWW)
-                sprx <= H_RES;
-            else
-                sprx <= sprx - SPR_SPX;
-        end
         if (rst_pix) begin
             sprx <= H_RES;
             spry <= 240;
+            move_toggle <= 1'b0;
+        end else if (frame) begin
+            move_toggle <= ~move_toggle;
+
+            if (move_toggle) begin
+                if (sprx <= -SPR_DRAWW)
+                    sprx <= H_RES;
+                else
+                    sprx <= sprx - SPR_SPX;
+            end
         end
     end
 
@@ -220,4 +226,9 @@ module top_twilight_cat (
     end
 
 endmodule
+
+
+
+
+
 
