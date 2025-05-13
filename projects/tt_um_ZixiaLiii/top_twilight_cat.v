@@ -50,8 +50,8 @@ module top_twilight_cat (
     // === SOUND ===
     music_entertainer music_inst (
         .clk(clk_pix),
-        .rst_n(btn_rst_n),
-        .pwm(AUD_PWM)
+        .AUD_PWM(AUD_PWM),
+        .AUD_SD(AUD_SD)
     );
 
     assign AUD_SD = 1'b1;
@@ -226,6 +226,11 @@ module top_twilight_cat (
     end
 
 endmodule
+
+
+
+
+
 
 
 
