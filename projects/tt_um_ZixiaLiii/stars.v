@@ -18,11 +18,11 @@ module stars #(
 
     // 夜晚判断：fade_level小于64或大于208
     wire is_night;
-    assign is_night = (fade_level < 8'd64) || (fade_level > 8'd208);
+    assign is_night = (fade_level < 8'd64);
 
     // 星星闪烁频率：每16帧翻转
     wire star_blink;
-    assign star_blink = frame_count[4];
+    assign star_blink = frame_count[2];
 
     // 12颗星星的位置
     wire [XW-1:0] star_x[0:11];
@@ -56,4 +56,5 @@ module stars #(
     end
 
 endmodule
+
 
